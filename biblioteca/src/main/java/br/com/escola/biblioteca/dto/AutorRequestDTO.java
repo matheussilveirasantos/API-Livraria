@@ -1,5 +1,9 @@
 package br.com.escola.biblioteca.dto;
 
-public class AutorRequestDTO {
+import java.time.LocalDate;
 
-}
+public record AutorRequestDTO(
+    String nome,
+    String nacionalidade,
+    LocalDate dataNascimento
+) {}
