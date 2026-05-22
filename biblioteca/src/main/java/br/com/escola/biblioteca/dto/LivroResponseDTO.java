@@ -1,7 +1,6 @@
 package br.com.escola.biblioteca.dto;
 
-public record LivroResponseDTO() {
-} LivroResponseDTO {
+public record LivroResponseDTO(
 
     Long id,
     String titulo,
@@ -10,9 +9,7 @@ public record LivroResponseDTO() {
     String genero,
     Long autorId,
     String autorNome
-){
-    
-}
-
+) 
+{
 
 }
