@@ -1,6 +1,8 @@
 package br.com.escola.biblioteca.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="livro")
@@ -11,15 +13,24 @@ public class Livro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank
+    @Size
     @Column(nullable = false, length = 200)
     private String titulo;
 
+    @NotBlank
+    @Size
     @Column(nullable = false, length = 13)
     private String isbn;
 
+
+    @NotBlank
+    @Size
     @Column(nullable = false)
     private Integer anoPublicacao;
 
+    @NotBlank
+    @Size
     @Column(nullable = false, length = 30)
     private String genero;
 
