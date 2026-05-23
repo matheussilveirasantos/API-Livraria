@@ -26,7 +26,7 @@ public class AutorController {
     public ResponseEntity<List<AutorResponseDTO>> listar() {
         return ResponseEntity.ok(autorService.listar());
     }
-
+        
     @GetMapping("/{id}")
     @Operation(summary = "Busca autor por ID")
     public ResponseEntity<AutorResponseDTO> buscarPorId(@PathVariable Long id) {
