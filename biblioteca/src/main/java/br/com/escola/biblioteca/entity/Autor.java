@@ -2,6 +2,7 @@ package br.com.escola.biblioteca.entity;
 
 import java.time.LocalDate;
 import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,83 +12,82 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "autor")
 public class Autor {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@NotBlank(message = "O nome do autor é obrigatório")
+	@Size(max = 100, message = "O nome do autor deve ter no máximo 100 caracteres")
+	@Column(name = "nome", nullable = false, length = 100)
+	private String nome;
 
-    @NotBlank(message = "O nome do autor é obrigatório")
-    @Size(max = 100, message = "O nome do autor deve ter no máximo 100 caracteres")
-    @Column(name = "nome", nullable = false, length = 100)
-    private String nome;
+	@NotBlank(message = "Nacionalidade do autor é obrigatório")
+	@Size(max = 50, message = "A nacionalidade do autor deve ter no máximo 50 caracteres")
+	@Column(name = "nacionalidade", nullable = false, length = 50)
+	private String nacionalidade;
 
-    @NotBlank(message = "Nacionalidade do autor é obrigatório")
-    @Size(max = 50, message = "A nacionalidade do autor deve ter no máximo 50 caracteres")
-    @Column(name = "nacionalidade", nullable = false, length = 50) 
-    private String nacionalidade;
+	@NotNull(message = "Data de nascimento do autor é obrigatória")
+	@Column(name = "dataNascimento", nullable = false)
+	private LocalDate dataNascimento;
 
-    @NotBlank(message = "Data de nascimento do autor é obrigatória")
-   @Column(name = "dataNascimento", nullable = false)
-    private LocalDate dataNascimento;
+	@OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
+	private List<Livro> livros;
 
-    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
-    private List<Livro> livros ;
+	public Autor() {
+	}
 
+	public Autor(Long id, String nome, String nacionalidade, LocalDate dataNascimento, List<Livro> livros) {
+		this.id = id;
+		this.nome = nome;
+		this.nacionalidade = nacionalidade;
+		this.dataNascimento = dataNascimento;
+		this.livros = livros;
+	}
 
-    public Autor() {
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public Autor(Long id, String nome,String nacionalidade,LocalDate dataNascimento,List<Livro> livros) {
-        this.id = id;
-        this.nome = nome;
-        this.nacionalidade = nacionalidade;
-        this.dataNascimento = dataNascimento;
-        this.livros = livros;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public String getNome() {
+		return nome;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-    public String getNome() {
-        return nome;
-    }
+	public String getNacionalidade() {
+		return nacionalidade;
+	}
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+	public void setNacionalidade(String nacionalidade) {
+		this.nacionalidade = nacionalidade;
+	}
 
-    public String getNacionalidade() {
-        return nacionalidade;
-    }
+	public LocalDate getDataNascimento() {
+		return dataNascimento;
+	}
 
-    public void setNacionalidade(String nacionalidade) {
-        this.nacionalidade = nacionalidade;
-    }
+	public void setDataNascimento(LocalDate dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
 
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
+	public List<Livro> getLivros() {
+		return livros;
+	}
 
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    public List<Livro> getLivros() {
-        return livros;
-    }
-
-    public void setLivros(List<Livro> livros) {
-        this.livros = livros;
-    } 
+	public void setLivros(List<Livro> livros) {
+		this.livros = livros;
+	}
 }

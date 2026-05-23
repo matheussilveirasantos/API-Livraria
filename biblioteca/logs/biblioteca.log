@@ -404,3 +404,11 @@ Caused by: org.postgresql.util.PSQLException: FATAL: banco de dados "biblioteca"
 2026-05-23T13:32:33.702-03:00  INFO 10792 --- [biblioteca] [http-nio-8080-exec-3] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 3250 ms
 2026-05-23T13:33:24.900-03:00  WARN 10792 --- [biblioteca] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
 2026-05-23T13:33:34.248-03:00  WARN 10792 --- [biblioteca] [http-nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource .]
+2026-05-23T13:46:23.833-03:00  INFO 10792 --- [biblioteca] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 5 class path changes (0 additions, 1 deletion, 4 modifications)
+2026-05-23T13:46:24.387-03:00  INFO 10792 --- [biblioteca] [Thread-5] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-05-23T13:46:25.408-03:00  INFO 10792 --- [biblioteca] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2026-05-23T13:46:25.443-03:00  INFO 10792 --- [biblioteca] [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-05-23T13:46:25.493-03:00  INFO 10792 --- [biblioteca] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-05-23T13:46:25.539-03:00  INFO 10792 --- [biblioteca] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-05-23T13:46:27.108-03:00  INFO 10792 --- [biblioteca] [restartedMain] b.c.e.biblioteca.BibliotecaApplication   : Starting BibliotecaApplication using Java 17.0.12 with PID 10792 (C:\Users\mathe\OneDrive\Desktop\API-Livraria\biblioteca\target\classes started by mathe in C:\Users\mathe\OneDrive\Desktop\API-Livraria\biblioteca)
+2026-05-23T13:46:27.116-03:00  INFO 10792 --- [biblioteca] [restartedMain] b.c.e.biblioteca.BibliotecaApplication   : No active profile set, falling back to 1 default profile: "default"
