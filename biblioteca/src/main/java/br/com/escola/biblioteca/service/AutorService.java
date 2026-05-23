@@ -5,6 +5,7 @@ import br.com.escola.biblioteca.dto.AutorResponseDTO;
 import br.com.escola.biblioteca.entity.Autor;
 import br.com.escola.biblioteca.repository.AutorRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public class AutorService {
         autor.setDataNascimento(dto.dataNascimento());
         return AutorResponseDTO.fromEntity(autorRepository.save(autor));
     }
-
+   
     public List<AutorResponseDTO> salvarLote(List<AutorRequestDTO> dtos) {
         List<Autor> autores = dtos.stream()
                 .map(dto -> {

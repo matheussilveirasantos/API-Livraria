@@ -26,7 +26,7 @@ public class AutorController {
     public ResponseEntity<List<AutorResponseDTO>> listar() {
         return ResponseEntity.ok(autorService.listar());
     }
-
+        
     @GetMapping("/{id}")
     @Operation(summary = "Busca autor por ID")
     public ResponseEntity<AutorResponseDTO> buscarPorId(@PathVariable Long id) {
@@ -42,6 +42,13 @@ public class AutorController {
     @ResponseStatus(HttpStatus.CREATED)
     public AutorResponseDTO criar(@Valid @RequestBody AutorRequestDTO dto) {
         return autorService.salvar(dto);
+    }
+
+    @PostMapping("/lote")
+    @Operation(summary = "Cadastra vários autores de uma vez")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<AutorResponseDTO> criarLote(@Valid @RequestBody List<AutorRequestDTO> dtos) {
+        return autorService.salvarLote(dtos);
     }
 
     @PutMapping("/{id}")
