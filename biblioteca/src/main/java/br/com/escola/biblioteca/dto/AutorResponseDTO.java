@@ -15,6 +15,7 @@ public record AutorResponseDTO(
                 autor.getId(),
                 autor.getNome(),
                 autor.getNacionalidade(),
-                autor.getDataNascimento());
+                autor.getDataNascimento()
+        );
     }
 }
