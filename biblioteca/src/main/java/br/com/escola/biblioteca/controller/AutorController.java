@@ -50,7 +50,11 @@ public class AutorController {
     public List<AutorResponseDTO> criarLote(@Valid @RequestBody List<AutorRequestDTO> dtos) {
         return autorService.salvarLote(dtos);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> origin
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza autor")
     public ResponseEntity<AutorResponseDTO> atualizar(

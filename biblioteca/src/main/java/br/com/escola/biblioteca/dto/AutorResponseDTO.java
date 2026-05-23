@@ -7,9 +7,15 @@ public record AutorResponseDTO(
         Long id,
         String nome,
         String nacionalidade,
+<<<<<<< HEAD
         LocalDate dataNascimento
 ) {
     public static AutorResponseDTO fromEntity(Autor autor) {
+=======
+        LocalDate dataNascimento) {
+
+    public static AutorResponseDTO from(Autor autor) {
+>>>>>>> origin
         return new AutorResponseDTO(
                 autor.getId(),
                 autor.getNome(),
