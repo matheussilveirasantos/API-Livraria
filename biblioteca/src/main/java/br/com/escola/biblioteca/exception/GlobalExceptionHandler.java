@@ -1,4 +1,4 @@
-package br.com.escola.biblioteca.config;
+package br.com.escola.biblioteca.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
