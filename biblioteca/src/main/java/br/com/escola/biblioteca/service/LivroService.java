@@ -76,12 +76,8 @@ public class LivroService {
 	// GET /livros/{id}
 
 	public LivroResponseDTO buscarPorId(Long id) {
-		Optional<Livro> livroOptional = livroRepository.findById(id);
-		if (livroOptional.isPresent()) {
-			return LivroResponseDTO.fromEntity(livroOptional.get());
-
-		}
-		return null;
+		return livroRepository.findById(id).map(LivroResponseDTO::fromEntity)
+				.orElseThrow(() -> new RuntimeException("Livro não encontrado com id: " + id));
 	}
 
 	// PUT /livros/{id}
@@ -104,11 +100,10 @@ public class LivroService {
 	// DELETE /livros/{id}
 
 	public void deletar(Long id) {
-		if (livroRepository.existsById(id)) {
-			livroRepository.deleteById(id);
-
+		if (!livroRepository.existsById(id)) {
+			throw new RuntimeException("Livro não encontrado com id: " + id);
 		}
-
+		livroRepository.deleteById(id);
 	}
 
 }
