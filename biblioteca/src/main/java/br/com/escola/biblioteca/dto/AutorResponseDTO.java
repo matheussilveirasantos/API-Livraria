@@ -10,8 +10,8 @@ public record AutorResponseDTO(
         String nacionalidade,
         LocalDate dataNascimento) {
 
-    public AutorResponseDTO(Autor autor) {
-        this(
+    public static AutorResponseDTO from(Autor autor) {
+        return new AutorResponseDTO(
                 autor.getId(),
                 autor.getNome(),
                 autor.getNacionalidade(),

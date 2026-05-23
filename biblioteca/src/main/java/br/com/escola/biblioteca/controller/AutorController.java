@@ -44,6 +44,13 @@ public class AutorController {
         return autorService.salvar(dto);
     }
 
+    @PostMapping("/lote")
+    @Operation(summary = "Cadastra vários autores de uma vez")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<AutorResponseDTO> criarLote(@Valid @RequestBody List<AutorRequestDTO> dtos) {
+        return autorService.salvarLote(dtos);
+    }
+
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza autor")
     public ResponseEntity<AutorResponseDTO> atualizar(
