@@ -8,7 +8,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -25,7 +32,7 @@ public class LivroController {
 
 	@Operation(summary = "Cadastrar livro", description = "Cria um novo livro vinculado a um autor")
 	@PostMapping
-	public ResponseEntity<LivroResponseDTO> criar(@Valid @RequestBody LivroRequestDTO dto) {
+	public ResponseEntity<LivroResponseDTO > criar(@Valid @RequestBody LivroRequestDTO dto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(livroService.criar(dto));
 	}
 
@@ -48,9 +55,10 @@ public class LivroController {
 	}
 
 	@Operation(summary = "Atualizar livro", description = "Atualiza os dados de um livro existente")
+	
 	@PutMapping("/{id}")
 	public ResponseEntity<LivroResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody LivroRequestDTO dto) {
-		return ResponseEntity.ok(livroService.atualizar(id, dto));
+		return ResponseEntity.ok(livroService.atualizar(dto,id));
 	}
 
 	@Operation(summary = "Deletar livro", description = "Remove um livro do sistema")
