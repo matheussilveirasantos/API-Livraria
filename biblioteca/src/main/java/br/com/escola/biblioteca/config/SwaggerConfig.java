@@ -33,9 +33,8 @@ public class SwaggerConfig {
         prodServer.setDescription("Servidor de Produção");
 
         Contact contact = new Contact();
-        contact.setName("Grupo - Biblioteca");
-        contact.setEmail("grupo@escola.com.br");
-        contact.setUrl("https://github.com/seu-repositorio");
+        contact.setName("Matheus Silveira Santos");
+        contact.setUrl("https://github.com/matheussilveirasantos/API-Livraria");
 
         License license = new License()
                 .name("Apache License 2.0")
@@ -46,7 +45,7 @@ public class SwaggerConfig {
                 .version("1.0.0")
                 .description("API REST para gerenciamento de uma biblioteca simples, " +
                              "permitindo o cadastro de autores e livros com relacionamento entre entidades.")
-                .termsOfService("https://github.com/seu-repositorio/termos")
+                .termsOfService("https://github.com/matheussilveirasantos/API-Livraria")
                 .contact(contact)
                 .license(license);
 
