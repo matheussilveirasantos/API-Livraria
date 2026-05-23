@@ -1,6 +1,5 @@
 package br.com.escola.biblioteca.dto;
 
-import br.com.escola.biblioteca.entity.Autor;
 import br.com.escola.biblioteca.entity.Livro;
 
 public record LivroResponseDTO(
