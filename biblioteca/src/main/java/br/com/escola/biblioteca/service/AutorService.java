@@ -5,8 +5,8 @@ import br.com.escola.biblioteca.dto.AutorResponseDTO;
 import br.com.escola.biblioteca.entity.Autor;
 import br.com.escola.biblioteca.repository.AutorRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,7 +18,19 @@ public class AutorService {
         this.autorRepository = autorRepository;
     }
 
-    public AutorResponseDTO criar(AutorRequestDTO dto) {
+    public List<AutorResponseDTO> listar() {
+        return autorRepository.findAll()
+                .stream()
+                .map(AutorResponseDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public Optional<AutorResponseDTO> buscarPorId(Long id) {
+        return autorRepository.findById(id)
+                .map(AutorResponseDTO::fromEntity);
+    }
+
+    public AutorResponseDTO salvar(AutorRequestDTO dto) {
         Autor autor = new Autor();
         autor.setNome(dto.nome());
         autor.setNacionalidade(dto.nacionalidade());
@@ -26,32 +38,38 @@ public class AutorService {
         return AutorResponseDTO.fromEntity(autorRepository.save(autor));
     }
 
-    public List<AutorResponseDTO> listarTodos() {
-        return autorRepository.findAll()
+    public List<AutorResponseDTO> salvarLote(List<AutorRequestDTO> dtos) {
+        List<Autor> autores = dtos.stream()
+                .map(dto -> {
+                    Autor autor = new Autor();
+                    autor.setNome(dto.nome());
+                    autor.setNacionalidade(dto.nacionalidade());
+                    autor.setDataNascimento(dto.dataNascimento());
+                    return autor;
+                })
+                .collect(Collectors.toList());
+
+        return autorRepository.saveAll(autores)
                 .stream()
                 .map(AutorResponseDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
-    public AutorResponseDTO buscarPorId(Long id) {
-        Autor autor = autorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Autor não encontrado com id: " + id));
-        return AutorResponseDTO.fromEntity(autor);
+    public Optional<AutorResponseDTO> atualizar(Long id, AutorRequestDTO dto) {
+        return autorRepository.findById(id)
+                .map(autor -> {
+                    autor.setNome(dto.nome());
+                    autor.setNacionalidade(dto.nacionalidade());
+                    autor.setDataNascimento(dto.dataNascimento());
+                    return AutorResponseDTO.fromEntity(autorRepository.save(autor));
+                });
     }
 
-    public AutorResponseDTO atualizar(Long id, AutorRequestDTO dto) {
-        Autor autor = autorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Autor não encontrado com id: " + id));
-        autor.setNome(dto.nome());
-        autor.setNacionalidade(dto.nacionalidade());
-        autor.setDataNascimento(dto.dataNascimento());
-        return AutorResponseDTO.fromEntity(autorRepository.save(autor));
-    }
-
-    public void deletar(Long id) {
+    public boolean remover(Long id) {
         if (!autorRepository.existsById(id)) {
-            throw new RuntimeException("Autor não encontrado com id: " + id);
+            return false;
         }
         autorRepository.deleteById(id);
+        return true;
     }
 }
