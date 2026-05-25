@@ -9,33 +9,56 @@ O projeto foi criado com foco em boas práticas de desenvolvimento backend, util
 # 🚀 Tecnologias Utilizadas
 
 * ☕ Java 17
-* 🌱 Spring Boot 3
+* 🌱 Spring Boot 3.5.0
 * 🗄️ Spring Data JPA
 * ✅ Bean Validation
 * 🐘 PostgreSQL
-* 📖 Swagger / OpenAPI
+* 📖 Swagger / OpenAPI (springdoc-openapi 2.8.8)
 * 🧪 JUnit
 * 📦 Maven
-* 🔥 Lombok
 
 ---
 
 # 📁 Estrutura do Projeto
 
 ```bash
-src
- ┣ main
- ┃ ┣ java
- ┃ ┃ ┗ br/com/escola/biblioteca
- ┃ ┃    ┣ config
- ┃ ┃    ┣ controller
- ┃ ┃    ┣ dto
- ┃ ┃    ┣ entity
- ┃ ┃    ┣ repository
- ┃ ┃    ┗ service
- ┃ ┗ resources
- ┃    ┗ application.properties
- ┗ test
+biblioteca
+ ┣ src
+ ┃ ┣ main
+ ┃ ┃ ┣ java
+ ┃ ┃ ┃ ┗ br/com/escola/biblioteca
+ ┃ ┃ ┃    ┣ config
+ ┃ ┃ ┃    ┃  ┣ DatabaseInitializer.java   ← cria o banco automaticamente na inicialização
+ ┃ ┃ ┃    ┃  ┗ SwaggerConfig.java         ← configuração do OpenAPI/Swagger
+ ┃ ┃ ┃    ┣ controller
+ ┃ ┃ ┃    ┃  ┣ AutorController.java
+ ┃ ┃ ┃    ┃  ┗ LivroController.java
+ ┃ ┃ ┃    ┣ dto
+ ┃ ┃ ┃    ┃  ┣ AutorRequestDTO.java
+ ┃ ┃ ┃    ┃  ┣ AutorResponseDTO.java
+ ┃ ┃ ┃    ┃  ┣ LivroRequestDTO.java
+ ┃ ┃ ┃    ┃  ┗ LivroResponseDTO.java
+ ┃ ┃ ┃    ┣ entity
+ ┃ ┃ ┃    ┃  ┣ Autor.java
+ ┃ ┃ ┃    ┃  ┗ Livro.java
+ ┃ ┃ ┃    ┣ exception
+ ┃ ┃ ┃    ┃  ┗ GlobalExceptionHandler.java
+ ┃ ┃ ┃    ┣ repository
+ ┃ ┃ ┃    ┃  ┣ AutorRepository.java
+ ┃ ┃ ┃    ┃  ┗ LivroRepository.java
+ ┃ ┃ ┃    ┣ service
+ ┃ ┃ ┃    ┃  ┣ AutorService.java
+ ┃ ┃ ┃    ┃  ┗ LivroService.java
+ ┃ ┃ ┃    ┗ BibliotecaApplication.java    ← classe principal
+ ┃ ┃ ┗ resources
+ ┃ ┃    ┣ Biblioteca.sql                  ← script de criação das tabelas
+ ┃ ┃    ┗ application.properties
+ ┃ ┗ test
+ ┃    ┗ java/br/com/escola/biblioteca
+ ┃       ┗ BibliotecaApplicationTests.java
+ ┣ logs
+ ┃ ┗ biblioteca.log
+ ┗ pom.xml
 ```
 
 ---
@@ -44,7 +67,8 @@ src
 
 ## 👨‍💼 Autores
 
-* ✅ Cadastrar autores
+* ✅ Cadastrar autor
+* ✅ Cadastrar vários autores de uma vez (lote)
 * ✅ Listar autores
 * ✅ Buscar autor por ID
 * ✅ Atualizar autor
@@ -52,23 +76,126 @@ src
 
 ## 📚 Livros
 
-* ✅ Cadastro de livros
-* ✅ Associação com autores
-* ✅ Atualização de livros
-* ✅ Exclusão de livros
-* ✅ Consulta de livros
+* ✅ Cadastrar livro
+* ✅ Cadastrar vários livros de uma vez (lote)
+* ✅ Listar livros
+* ✅ Buscar livro por ID
+* ✅ Atualizar livro
+* ✅ Excluir livro
+
+---
+
+# 🌐 Endpoints
+
+## 👨‍💼 Autores — `/autores`
+
+| Método | Rota           | Descrição                        |
+|--------|----------------|----------------------------------|
+| GET    | `/autores`     | Lista todos os autores           |
+| GET    | `/autores/{id}`| Busca autor por ID               |
+| POST   | `/autores`     | Cadastra um novo autor           |
+| POST   | `/autores/lote`| Cadastra vários autores de uma vez|
+| PUT    | `/autores/{id}`| Atualiza os dados de um autor    |
+| DELETE | `/autores/{id}`| Remove um autor                  |
+
+## 📚 Livros — `/livros`
+
+| Método | Rota           | Descrição                        |
+|--------|----------------|----------------------------------|
+| GET    | `/livros`      | Lista todos os livros            |
+| GET    | `/livros/{id}` | Busca livro por ID               |
+| POST   | `/livros`      | Cadastra um novo livro           |
+| POST   | `/livros/lote` | Cadastra vários livros de uma vez|
+| PUT    | `/livros/{id}` | Atualiza os dados de um livro    |
+| DELETE | `/livros/{id}` | Remove um livro                  |
+
+---
+
+# 📖 Exemplos de Requisição
+
+## Criar Autor
+
+```http
+POST /autores
+Content-Type: application/json
+```
+
+```json
+{
+  "nome": "Machado de Assis",
+  "nacionalidade": "Brasileiro",
+  "dataNascimento": "1839-06-21"
+}
+```
+
+## Criar Livro
+
+```http
+POST /livros
+Content-Type: application/json
+```
+
+```json
+{
+  "titulo": "Dom Casmurro",
+  "isbn": "9788535910657",
+  "anoPublicacao": 1899,
+  "genero": "Romance",
+  "autorId": 1
+}
+```
+
+## Cadastro em Lote — Autores
+
+```http
+POST /autores/lote
+Content-Type: application/json
+```
+
+```json
+[
+  {
+    "nome": "Clarice Lispector",
+    "nacionalidade": "Brasileira",
+    "dataNascimento": "1920-12-10"
+  },
+  {
+    "nome": "Guimarães Rosa",
+    "nacionalidade": "Brasileiro",
+    "dataNascimento": "1908-06-27"
+  }
+]
+```
 
 ---
 
 # 🧱 Arquitetura Utilizada
 
-O projeto segue uma arquitetura em camadas:
+O projeto segue uma arquitetura em camadas (Layered Architecture):
 
-* **Controller** → Responsável pelos endpoints da API
-* **Service** → Regras de negócio
-* **Repository** → Comunicação com banco de dados
-* **DTO** → Transferência de dados
-* **Entity** → Representação das tabelas
+```
+[ Cliente / Swagger ]
+        ↓
+  [ Controller ]      ← recebe as requisições HTTP, delega ao Service
+        ↓
+   [ Service ]        ← regras de negócio, conversão DTO ↔ Entity
+        ↓
+  [ Repository ]      ← acesso ao banco via Spring Data JPA
+        ↓
+  [ PostgreSQL ]
+```
+
+### Detalhamento de cada camada
+
+| Camada | Classes | Responsabilidade |
+|---|---|---|
+| **Controller** | `AutorController`, `LivroController` | Expõe os endpoints REST, valida entrada com `@Valid`, devolve `ResponseEntity` |
+| **Service** | `AutorService`, `LivroService` | Regras de negócio, busca de autor ao criar livro, conversão entre DTO e Entity |
+| **Repository** | `AutorRepository`, `LivroRepository` | Interfaces `JpaRepository` — CRUD gerado automaticamente pelo Spring Data |
+| **Entity** | `Autor`, `Livro` | Mapeamento JPA das tabelas; relacionamento `@OneToMany` / `@ManyToOne` entre Autor e Livro |
+| **DTO** | `AutorRequestDTO`, `AutorResponseDTO`, `LivroRequestDTO`, `LivroResponseDTO` | Records Java para entrada e saída de dados; `ResponseDTO` contém método estático `fromEntity()` |
+| **Exception** | `GlobalExceptionHandler` | Captura exceções globalmente via `@RestControllerAdvice`; retorna respostas padronizadas com `timestamp`, `status`, `erro` e `mensagem` |
+| **Config** | `SwaggerConfig`, `DatabaseInitializer` | `SwaggerConfig` configura o OpenAPI com servidores e metadados; `DatabaseInitializer` verifica e cria o banco `biblioteca` automaticamente ao subir a aplicação |
 
 ---
 
@@ -77,7 +204,7 @@ O projeto segue uma arquitetura em camadas:
 ## 1️⃣ Clonar o repositório
 
 ```bash
-git clone <https://github.com/matheussilveirasantos/API-Livraria.git>
+git clone https://github.com/matheussilveirasantos/API-Livraria.git
 ```
 
 ---
@@ -85,7 +212,7 @@ git clone <https://github.com/matheussilveirasantos/API-Livraria.git>
 ## 2️⃣ Entrar na pasta do projeto
 
 ```bash
-cd biblioteca
+cd API-Livraria/biblioteca
 ```
 
 ---
@@ -102,12 +229,13 @@ CREATE DATABASE biblioteca;
 
 ## 4️⃣ Configurar o application.properties
 
+Ajuste as credenciais do banco no arquivo `src/main/resources/application.properties`:
+
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/biblioteca
 spring.datasource.username=postgres
 spring.datasource.password=SUA-SENHA
 ```
-
 ---
 
 ## 5️⃣ Executar a aplicação
@@ -118,9 +246,9 @@ Pelo terminal:
 ./mvnw spring-boot:run
 ```
 
-Ou diretamente pela classe:
+Ou diretamente pela classe principal:
 
-```bash
+```
 BibliotecaApplication.java
 ```
 
@@ -130,42 +258,20 @@ BibliotecaApplication.java
 
 Aplicação:
 
-```bash
+```
 http://localhost:8080
 ```
 
-Swagger:
+Swagger UI:
 
-```bash
+```
 http://localhost:8080/swagger-ui.html
 ```
 
-API Docs:
+API Docs (JSON):
 
-```bash
+```
 http://localhost:8080/api-docs
-```
-
----
-
-# 📖 Exemplo de Endpoint
-
-## Criar Autor
-
-### POST
-
-```http
-POST /autores
-```
-
-### Body
-
-```json
-{
-  "nome": "Machado de Assis",
-  "nacionalidade": "Brasileiro",
-  "dataNascimento": "1839-06-21"
-}
 ```
 
 ---
@@ -183,11 +289,11 @@ Para executar os testes:
 # 📌 Padrões Utilizados
 
 * REST API
-* DTO Pattern
-* Validation Pattern
+* DTO Pattern (Records Java)
+* Bean Validation
 * Layered Architecture
-* Tratamento global de exceções
-* Documentação automática com Swagger
+* Tratamento global de exceções (`GlobalExceptionHandler`)
+* Documentação automática com Swagger/OpenAPI
 
 ---
 
