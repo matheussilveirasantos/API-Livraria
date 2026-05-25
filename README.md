@@ -6,6 +6,18 @@ O projeto foi criado com foco em boas práticas de desenvolvimento backend, util
 
 ---
 
+# 👨‍💻 Equipe
+
+## Desenvolvedores
+
+* Caique
+* Simone
+* Matheus
+* Rayla
+* Patrick
+
+---
+
 # 🚀 Tecnologias Utilizadas
 
 * ☕ Java 17
@@ -256,11 +268,14 @@ BibliotecaApplication.java
 
 # 🌐 Acesso da API
 
-Aplicação:
+## Servidores disponíveis
 
-```
-http://localhost:8080
-```
+| Ambiente | URL |
+|---|---|
+| 🛠️ Desenvolvimento | `http://localhost:8080` |
+| 🚀 Produção | `https://api.biblioteca.com.br` |
+
+## Documentação interativa
 
 Swagger UI:
 
@@ -268,7 +283,7 @@ Swagger UI:
 http://localhost:8080/swagger-ui.html
 ```
 
-API Docs (JSON):
+API Docs (OpenAPI 3.1.0 — JSON):
 
 ```
 http://localhost:8080/api-docs
@@ -276,9 +291,30 @@ http://localhost:8080/api-docs
 
 ---
 
-# 🧪 Testes
+# 🧪 Testando com Postman
 
-Para executar os testes:
+O arquivo `data-202652314436.json` na raiz do repositório contém a especificação completa da API no formato **OpenAPI 3.1.0**. Basta importá-lo no Postman para ter todas as rotas, schemas e exemplos prontos para teste.
+
+## Como importar
+
+**1.** Abra o Postman e clique em **Import**
+
+**2.** Selecione o arquivo `data-202652314436.json` da raiz do projeto
+
+**3.** O Postman vai gerar automaticamente todas as requisições:
+
+| Recurso | Rotas importadas |
+|---|---|
+| 📚 Livros | `GET /livros`, `GET /livros/{id}`, `POST /livros`, `POST /livros/lote`, `PUT /livros/{id}`, `DELETE /livros/{id}` |
+| 👨‍💼 Autores | `GET /autores`, `GET /autores/{id}`, `POST /autores`, `POST /autores/lote`, `PUT /autores/{id}`, `DELETE /autores/{id}` |
+
+**4.** Certifique-se de que a aplicação está rodando em `http://localhost:8080` antes de disparar as requisições
+
+---
+
+# 🔬 Testes Unitários
+
+Para executar os testes automatizados:
 
 ```bash
 ./mvnw test
@@ -297,18 +333,6 @@ Para executar os testes:
 
 ---
 
-# 👨‍💻 Equipe
-
-## Desenvolvedores
-
-* Caique
-* Simone
-* Matheus
-* Rayla
-* Patrick
-
----
-
 # 🎯 Objetivo do Projeto
 
 Este projeto foi desenvolvido com fins educacionais para prática de:
@@ -323,4 +347,4 @@ Este projeto foi desenvolvido com fins educacionais para prática de:
 
 # 📄 Licença
 
-Projeto desenvolvido para estudos e aprendizado.
+Projeto desenvolvido para estudos e aprendizado. Distribuído sob a [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
