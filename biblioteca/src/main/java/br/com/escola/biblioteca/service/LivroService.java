@@ -81,7 +81,6 @@ public class LivroService {
         emailService.enviarEmailExclusaoLivro(livro);
     }
 
-    // -----------------------------------------------
     private Livro montarLivro(Livro livro, LivroRequestDTO dto) {
         Autor autor = autorRepository.findById(dto.autorId())
                 .orElseThrow(() -> new BusinessException("Autor não encontrado com id: " + dto.autorId()));
