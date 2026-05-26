@@ -4,71 +4,63 @@ import br.com.escola.biblioteca.dto.AutorRequestDTO;
 import br.com.escola.biblioteca.dto.AutorResponseDTO;
 import br.com.escola.biblioteca.service.AutorService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.Optional;
 
-@Tag(name = "Autores", description = "Gerenciamento de autores")
+import java.util.List;
+
 @RestController
 @RequestMapping("/autores")
+@Tag(name = "Autores", description = "CRUD de autores")
+@SecurityRequirement(name = "BearerAuth")
 public class AutorController {
 
-    @Autowired
-    private AutorService autorService;
+    private final AutorService autorService;
 
+    public AutorController(AutorService autorService) {
+        this.autorService = autorService;
+    }
+
+    @Operation(summary = "Listar autores")
     @GetMapping
-    @Operation(summary = "Lista todos os autores")
     public ResponseEntity<List<AutorResponseDTO>> listar() {
         return ResponseEntity.ok(autorService.listar());
     }
 
+    @Operation(summary = "Buscar autor por ID")
     @GetMapping("/{id}")
-    @Operation(summary = "Busca autor por ID")
     public ResponseEntity<AutorResponseDTO> buscarPorId(@PathVariable Long id) {
-        Optional<AutorResponseDTO> autor = autorService.buscarPorId(id);
-        if (autor.isPresent()) {
-            return ResponseEntity.ok(autor.get());
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(autorService.buscarPorId(id));
     }
 
+    @Operation(summary = "Cadastrar autor")
     @PostMapping
-    @Operation(summary = "Cadastra novo autor")
-    @ResponseStatus(HttpStatus.CREATED)
-    public AutorResponseDTO criar(@Valid @RequestBody AutorRequestDTO dto) {
-        return autorService.salvar(dto);
+    public ResponseEntity<AutorResponseDTO> criar(@Valid @RequestBody AutorRequestDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(autorService.salvar(dto));
     }
 
+    @Operation(summary = "Cadastrar autores em lote")
     @PostMapping("/lote")
-    @Operation(summary = "Cadastra vários autores de uma vez")
-    @ResponseStatus(HttpStatus.CREATED)
-    public List<AutorResponseDTO> criarLote(@Valid @RequestBody List<AutorRequestDTO> dtos) {
-        return autorService.salvarLote(dtos);
+    public ResponseEntity<List<AutorResponseDTO>> criarLote(@Valid @RequestBody List<AutorRequestDTO> dtos) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(autorService.salvarLote(dtos));
     }
 
+    @Operation(summary = "Atualizar autor")
     @PutMapping("/{id}")
-    @Operation(summary = "Atualiza autor")
-    public ResponseEntity<AutorResponseDTO> atualizar(
-            @PathVariable Long id,
-            @Valid @RequestBody AutorRequestDTO dto) {
-        Optional<AutorResponseDTO> atualizado = autorService.atualizar(id, dto);
-        if (atualizado.isPresent()) {
-            return ResponseEntity.ok(atualizado.get());
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<AutorResponseDTO> atualizar(@PathVariable Long id,
+                                                       @Valid @RequestBody AutorRequestDTO dto) {
+        return ResponseEntity.ok(autorService.atualizar(id, dto));
     }
 
+    @Operation(summary = "Deletar autor",
+               description = "Não é permitido deletar um autor com livros vinculados")
     @DeleteMapping("/{id}")
-    @Operation(summary = "Remove autor")
-    public ResponseEntity<Void> remover(@PathVariable Long id) {
-        if (autorService.remover(id)) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        autorService.remover(id);
+        return ResponseEntity.noContent().build();
     }
 }

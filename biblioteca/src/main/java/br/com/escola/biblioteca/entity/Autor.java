@@ -1,22 +1,20 @@
 package br.com.escola.biblioteca.entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.util.List;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "autor")
+@Getter @Setter @NoArgsConstructor
 public class Autor {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,67 +25,15 @@ public class Autor {
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    @NotBlank(message = "Nacionalidade do autor é obrigatório")
-    @Size(max = 50, message = "A nacionalidade do autor deve ter no máximo 50 caracteres")
-    @Column(name = "nacionalidade", nullable = false, length = 50) 
+    @NotBlank(message = "Nacionalidade do autor é obrigatória")
+    @Size(max = 50, message = "A nacionalidade deve ter no máximo 50 caracteres")
+    @Column(name = "nacionalidade", nullable = false, length = 50)
     private String nacionalidade;
 
-    @NotBlank(message = "Data de nascimento do autor é obrigatória")
-   @Column(name = "dataNascimento", nullable = false)
+    @NotNull(message = "Data de nascimento do autor é obrigatória")
+    @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
-    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
-    private List<Livro> livros ;
-
-
-    public Autor() {
-    }
-
-    public Autor(Long id, String nome,String nacionalidade,LocalDate dataNascimento,List<Livro> livros) {
-        this.id = id;
-        this.nome = nome;
-        this.nacionalidade = nacionalidade;
-        this.dataNascimento = dataNascimento;
-        this.livros = livros;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getNacionalidade() {
-        return nacionalidade;
-    }
-
-    public void setNacionalidade(String nacionalidade) {
-        this.nacionalidade = nacionalidade;
-    }
-
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    public List<Livro> getLivros() {
-        return livros;
-    }
-
-    public void setLivros(List<Livro> livros) {
-        this.livros = livros;
-    } 
+    @OneToMany(mappedBy = "autor", fetch = FetchType.LAZY)
+    private List<Livro> livros;
 }
