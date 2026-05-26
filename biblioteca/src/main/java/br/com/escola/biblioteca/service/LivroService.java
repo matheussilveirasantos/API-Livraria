@@ -1,109 +1,101 @@
 package br.com.escola.biblioteca.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import br.com.escola.biblioteca.dto.LivroRequestDTO;
 import br.com.escola.biblioteca.dto.LivroResponseDTO;
 import br.com.escola.biblioteca.entity.Autor;
+import br.com.escola.biblioteca.entity.Editora;
+import br.com.escola.biblioteca.entity.Genero;
 import br.com.escola.biblioteca.entity.Livro;
+import br.com.escola.biblioteca.exception.BusinessException;
 import br.com.escola.biblioteca.repository.AutorRepository;
+import br.com.escola.biblioteca.repository.EditoraRepository;
+import br.com.escola.biblioteca.repository.GeneroRepository;
 import br.com.escola.biblioteca.repository.LivroRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LivroService {
 
-	@Autowired
-	private LivroRepository livroRepository;
+    private final LivroRepository livroRepository;
+    private final AutorRepository autorRepository;
+    private final GeneroRepository generoRepository;
+    private final EditoraRepository editoraRepository;
+    private final EmailService emailService;
 
-	@Autowired
-	private AutorRepository autorRepository;
+    public LivroService(LivroRepository livroRepository,
+                        AutorRepository autorRepository,
+                        GeneroRepository generoRepository,
+                        EditoraRepository editoraRepository,
+                        EmailService emailService) {
+        this.livroRepository = livroRepository;
+        this.autorRepository = autorRepository;
+        this.generoRepository = generoRepository;
+        this.editoraRepository = editoraRepository;
+        this.emailService = emailService;
+    }
 
-	// POST /livros
+    public LivroResponseDTO criar(LivroRequestDTO dto) {
+        Livro livro = montarLivro(new Livro(), dto);
+        Livro salvo = livroRepository.save(livro);
+        emailService.enviarEmailCadastroLivro(salvo);
+        return LivroResponseDTO.fromEntity(salvo);
+    }
 
-	public LivroResponseDTO criar(LivroRequestDTO requestLivro) {
+    public List<LivroResponseDTO> criarLote(List<LivroRequestDTO> dtos) {
+        List<Livro> livros = dtos.stream()
+                .map(dto -> montarLivro(new Livro(), dto))
+                .collect(Collectors.toList());
+        List<Livro> salvos = livroRepository.saveAll(livros);
+        salvos.forEach(emailService::enviarEmailCadastroLivro);
+        return salvos.stream().map(LivroResponseDTO::fromEntity).collect(Collectors.toList());
+    }
 
-		Optional<Autor> autorOptional = Optional.ofNullable(autorRepository.findById(requestLivro.autorId())
-				.orElseThrow(() -> new RuntimeException("Autor não encontrado com id")));
+    public List<LivroResponseDTO> listarTodos() {
+        return livroRepository.findAll().stream()
+                .map(LivroResponseDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
 
-		Livro livro = new Livro();
-		livro.setTitulo(requestLivro.titulo());
-		livro.setIsbn(requestLivro.isbn());
-		livro.setAnoPublicacao(requestLivro.anoPublicacao());
-		livro.setGenero(requestLivro.genero());
-		livro.setAutor(autorOptional.get());
+    public LivroResponseDTO buscarPorId(Long id) {
+        return livroRepository.findById(id)
+                .map(LivroResponseDTO::fromEntity)
+                .orElseThrow(() -> new BusinessException("Livro não encontrado com id: " + id));
+    }
 
-		return LivroResponseDTO.fromEntity(livroRepository.save(livro));
+    public LivroResponseDTO atualizar(Long id, LivroRequestDTO dto) {
+        Livro livro = livroRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Livro não encontrado com id: " + id));
+        montarLivro(livro, dto);
+        Livro salvo = livroRepository.save(livro);
+        emailService.enviarEmailAlteracaoLivro(salvo);
+        return LivroResponseDTO.fromEntity(salvo);
+    }
 
-	}
+    public void deletar(Long id) {
+        Livro livro = livroRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Livro não encontrado com id: " + id));
+        livroRepository.deleteById(id);
+        emailService.enviarEmailExclusaoLivro(livro);
+    }
 
-	public List<LivroResponseDTO> criarLote(List<LivroRequestDTO> listaRequest) {
+    // -----------------------------------------------
+    private Livro montarLivro(Livro livro, LivroRequestDTO dto) {
+        Autor autor = autorRepository.findById(dto.autorId())
+                .orElseThrow(() -> new BusinessException("Autor não encontrado com id: " + dto.autorId()));
+        Genero genero = generoRepository.findById(dto.generoId())
+                .orElseThrow(() -> new BusinessException("Gênero não encontrado com id: " + dto.generoId()));
+        Editora editora = editoraRepository.findById(dto.editoraId())
+                .orElseThrow(() -> new BusinessException("Editora não encontrada com id: " + dto.editoraId()));
 
-		List<Livro> livros = listaRequest.stream().map(listaDTO -> {
-			Autor autor = autorRepository.findById(listaDTO.autorId())
-					.orElseThrow(() -> new RuntimeException("Autor não encontrado com id: " + listaDTO.autorId()));
-			Livro livro = new Livro();
-			livro.setTitulo(listaDTO.titulo());
-			livro.setIsbn(listaDTO.isbn());
-			livro.setAnoPublicacao(listaDTO.anoPublicacao());
-			livro.setGenero(listaDTO.genero());
-			livro.setAutor(autor);
-			return livro;
-
-		}).collect(Collectors.toList());
-
-		return livroRepository.saveAll(livros).stream().map(LivroResponseDTO::fromEntity).collect(Collectors.toList());
-
-	}
-
-	// GET /livros
-	public List<LivroResponseDTO> listarTodos() {
-		List<Livro> livros = livroRepository.findAll();
-		List<LivroResponseDTO> listaResposta = new ArrayList<>();
-
-		for (Livro livro : livros) {
-			listaResposta.add(LivroResponseDTO.fromEntity(livro));
-		}
-
-		return listaResposta;
-	}
-
-	// GET /livros/{id}
-
-	public LivroResponseDTO buscarPorId(Long id) {
-		return livroRepository.findById(id).map(LivroResponseDTO::fromEntity)
-				.orElseThrow(() -> new RuntimeException("Livro não encontrado com id: " + id));
-	}
-
-	// PUT /livros/{id}
-
-	public LivroResponseDTO atualizar(LivroRequestDTO livroRequest, Long id) {
-		Livro livro = livroRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Livro não encontrado com id " + id));
-		livro.setTitulo(livroRequest.titulo());
-		livro.setIsbn(livroRequest.isbn());
-		livro.setGenero(livroRequest.genero());
-		livro.setAnoPublicacao(livroRequest.anoPublicacao());
-
-		Autor autor = autorRepository.findById(livroRequest.autorId())
-				.orElseThrow(() -> new RuntimeException("Autor não encontrado com id: " + livroRequest.autorId()));
-		livro.setAutor(autor);
-		return LivroResponseDTO.fromEntity(livroRepository.save(livro));
-
-	}
-
-	// DELETE /livros/{id}
-
-	public void deletar(Long id) {
-		if (!livroRepository.existsById(id)) {
-			throw new RuntimeException("Livro não encontrado com id: " + id);
-		}
-		livroRepository.deleteById(id);
-	}
-
+        livro.setTitulo(dto.titulo());
+        livro.setIsbn(dto.isbn());
+        livro.setAnoPublicacao(dto.anoPublicacao());
+        livro.setAutor(autor);
+        livro.setGenero(genero);
+        livro.setEditora(editora);
+        return livro;
+    }
 }
