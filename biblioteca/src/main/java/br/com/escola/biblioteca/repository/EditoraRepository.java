@@ -1,5 +1,12 @@
 package br.com.escola.biblioteca.repository;
 
-public class EditoraRepository {
+import br.com.escola.biblioteca.entity.Editora;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface EditoraRepository extends JpaRepository<Editora, Lon {
+
+    boolean existsByCnpj(String nome);
 
 }
