@@ -4,7 +4,10 @@ import br.com.escola.biblioteca.dto.AutorRequestDTO;
 import br.com.escola.biblioteca.dto.AutorResponseDTO;
 import br.com.escola.biblioteca.entity.Autor;
 import br.com.escola.biblioteca.repository.AutorRepository;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -66,11 +69,15 @@ public class AutorService {
                 });
     }
 
-    public boolean remover(Long id) {
-        if (!autorRepository.existsById(id)) {
-            return false;
+  
+    public void remover(Long id) {
+        Autor autor = autorRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Autor não encontrado com id: " + id));
+
+        if (autor.getLivros() != null && !autor.getLivros().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Não é possível excluir o autor porque ele possui livros associados.");
         }
         autorRepository.deleteById(id);
-        return true;
+       
     }
 }
