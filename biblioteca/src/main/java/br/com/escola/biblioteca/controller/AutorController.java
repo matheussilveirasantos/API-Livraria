@@ -66,9 +66,7 @@ public class AutorController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Remove autor")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
-        if (autorService.remover(id)) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+         autorService.remover(id);
+            return ResponseEntity.noContent().build(); 
     }
 }
