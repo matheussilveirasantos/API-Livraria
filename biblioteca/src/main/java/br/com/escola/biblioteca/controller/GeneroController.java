@@ -52,6 +52,7 @@ public class GeneroController {
 
     @Operation(summary="Deletar gênero por id")
     @DeleteMapping("/{id}")
+    
      public ResponseEntity <GeneroResponseDTO>deletar(@PathVariable long id){
         generoService.deletar(id);
         return ResponseEntity.noContent().build();
