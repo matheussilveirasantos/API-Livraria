@@ -3,6 +3,8 @@ package br.com.escola.biblioteca.service;
 import br.com.escola.biblioteca.dto.GeneroRequestDTO;
 import br.com.escola.biblioteca.dto.GeneroResponseDTO;
 import br.com.escola.biblioteca.entity.Genero;
+import br.com.escola.biblioteca.exception.BusinessException;
+import br.com.escola.biblioteca.exception.Validador;
 import br.com.escola.biblioteca.repository.GeneroRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +21,16 @@ public class GeneroService {
     }
 
     public GeneroResponseDTO criar(GeneroRequestDTO dto) {
+        Validador.validarNuloOuVazio(dto.nome(), "O nome do gênero não pode ser nulo ou vazio.");
+        Validador.validarNuloOuVazio(dto.sigla(), "A sigla do gênero não pode ser nula ou vazia.");
+
         if (generoRepository.existsByNome(dto.nome())) {
-            throw new RuntimeException("Já existe um gênero com o nome: " + dto.nome());
+            throw new BusinessException("Já existe um gênero com o nome: " + dto.nome());
         }
         if (generoRepository.existsBySigla(dto.sigla())) {
-            throw new RuntimeException("Já existe um gênero com a sigla: " + dto.sigla());
+            throw new BusinessException("Já existe um gênero com a sigla: " + dto.sigla());
         }
+
         Genero genero = new Genero();
         genero.setNome(dto.nome());
         genero.setSigla(dto.sigla().toUpperCase());
@@ -39,27 +45,33 @@ public class GeneroService {
     }
 
     public GeneroResponseDTO buscarPorId(Long id) {
+        Validador.validarNulo(id, "O id não pode ser nulo.");
         return generoRepository.findById(id)
                 .map(GeneroResponseDTO::fromEntity)
-                .orElseThrow(() -> new RuntimeException("Gênero não encontrado com id: " + id));
+                .orElseThrow(() -> new BusinessException("Gênero não encontrado com id: " + id));
     }
 
     public GeneroResponseDTO atualizar(Long id, GeneroRequestDTO dto) {
+        Validador.validarNulo(id, "O id não pode ser nulo.");
+        Validador.validarNuloOuVazio(dto.nome(), "O nome do gênero não pode ser nulo ou vazio.");
+        Validador.validarNuloOuVazio(dto.sigla(), "A sigla do gênero não pode ser nula ou vazia.");
+
         Genero genero = generoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Gênero não encontrado com id: " + id));
+                .orElseThrow(() -> new BusinessException("Gênero não encontrado com id: " + id));
         genero.setNome(dto.nome());
         genero.setSigla(dto.sigla().toUpperCase());
         return GeneroResponseDTO.fromEntity(generoRepository.save(genero));
     }
 
     public void deletar(Long id) {
+        Validador.validarNulo(id, "O id não pode ser nulo.");
         if (!generoRepository.existsById(id)) {
-            throw new RuntimeException("Gênero não encontrado com id: " + id);
+            throw new BusinessException("Gênero não encontrado com id: " + id);
         }
         try {
             generoRepository.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException("Não é possível excluir o gênero pois ele está vinculado a um ou mais livros.");
+            throw new BusinessException("Não é possível excluir o gênero pois ele está vinculado a um ou mais livros.");
         }
     }
 }
