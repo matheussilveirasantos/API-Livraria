@@ -24,7 +24,7 @@
       padding: 20px;
     }
 
-    /* ===== Wrapper externo com borda animada ===== */
+    /* Wrapper externo com borda animada */
     .box {
       position: relative;
       width: 420px;
@@ -60,7 +60,7 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* ===== Painel interno ===== */
+    /* Painel interno */
     .login {
       position: relative;
       inset: 4px;
@@ -72,7 +72,7 @@
       z-index: 2;
     }
 
-    /* ===== Header ===== */
+    /* Header */
     .login-header {
       text-align: center;
       margin-bottom: 28px;
@@ -97,7 +97,7 @@
       font-size: 0.75rem;
     }
 
-    /* ===== Tabs ===== */
+    /* Tabs */
     .tabs {
       display: flex;
       background: rgba(255,255,255,0.06);
@@ -128,7 +128,7 @@
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* ===== Alertas ===== */
+    /* Alertas */
     .alert {
       display: none;
       align-items: center;
@@ -143,7 +143,7 @@
     .alert-success { background: rgba(69,243,255,.1); color: #45f3ff; border: 1px solid rgba(69,243,255,.3); }
     .alert-info    { background: rgba(69,243,255,.08); color: rgba(255,255,255,.7); border: 1px solid rgba(69,243,255,.2); display: flex; }
 
-    /* ===== Grupos de campo ===== */
+    /* Grupos de campo */
     .form-group {
       margin-bottom: 18px;
     }
@@ -213,7 +213,7 @@
     }
     .toggle-pw:hover { color: #45f3ff; }
 
-    /* ===== Link esqueci senha ===== */
+    /* Link esqueci senha */
     .forgot {
       text-align: right;
       margin-top: -10px;
@@ -227,7 +227,7 @@
     }
     .forgot a:hover { color: #45f3ff; }
 
-    /* ===== Botão principal ===== */
+    /* Botão principal */
     .btn-primary {
       width: 100%;
       background: #45f3ff;
@@ -267,7 +267,7 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ===== Links inferiores ===== */
+    /* Links inferiores */
     .group {
       display: flex;
       justify-content: space-between;
@@ -325,7 +325,7 @@
     }
     .btn-copy:hover { background: rgba(69,243,255,0.3); }
 
-    /* ===== Divider ===== */
+    /* Divider */
     .divider {
       display: flex;
       align-items: center;
@@ -343,7 +343,7 @@
       background: rgba(255,255,255,0.1);
     }
 
-    /* ===== Credenciais ===== */
+    /* Credenciais */
     .creds-info {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
@@ -373,7 +373,7 @@
       font-size: 0.75rem;
     }
 
-    /* ===== Footer ===== */
+    /* Footer */
     .card-footer {
       border-top: 1px solid rgba(255,255,255,0.07);
       padding: 14px 36px;
@@ -391,7 +391,7 @@
     }
     .card-footer a:hover { text-decoration: underline; }
 
-    /* ===== Tabela API ===== */
+    /* Tabela API */
     .api-table {
       width: 100%;
       border-collapse: collapse;
@@ -452,7 +452,7 @@
       </button>
     </div>
 
-    <!-- ===== PAINEL LOGIN ===== -->
+    <!-- PAINEL LOGIN -->
     <div id="panel-login" class="tab-panel active">
 
       <div id="alert-login" class="alert"></div>
@@ -477,19 +477,12 @@
           </div>
         </div>
 
-        <div class="forgot"><a href="#">Esqueci minha senha</a></div>
-
         <button type="submit" class="btn-primary" id="btn-login">
           <i class="fa-solid fa-arrow-right-to-bracket"></i>
           Entrar
           <span class="spinner" id="spinner-login"></span>
         </button>
       </form>
-
-      <div class="group">
-        <a href="#">Esqueci minha senha</a>
-        <a href="#"><i class="fa-solid fa-heart" style="color:#ff007f; margin-right:4px;"></i>Cadastrar</a>
-      </div>
 
       <!-- Token result -->
       <div class="token-box" id="token-box">
@@ -509,7 +502,7 @@
       </div>
     </div>
 
-    <!-- ===== PAINEL API INFO ===== -->
+    <!-- PAINEL API INFO -->
     <div id="panel-api" class="tab-panel">
       <div class="alert alert-info show">
         <i class="fa-solid fa-circle-info"></i>
@@ -560,7 +553,6 @@
 <script>
   const API = 'http://localhost:8080';
 
-  // ── Tab switching ──────────────────────────────────────
   function switchTab(tab, el) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -568,7 +560,6 @@
     el.classList.add('active');
   }
 
-  // ── Toggle password visibility ─────────────────────────
   function togglePassword() {
     const inp  = document.getElementById('password');
     const icon = document.getElementById('eye-icon');
@@ -581,14 +572,12 @@
     }
   }
 
-  // ── Mostrar alerta ─────────────────────────────────────
   function showAlert(id, type, icon, msg) {
     const el = document.getElementById(id);
     el.className = 'alert alert-' + type + ' show';
     el.innerHTML = `<i class="${icon}"></i><span>${msg}</span>`;
   }
 
-  // ── Login ──────────────────────────────────────────────
   document.getElementById('form-login').addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -633,7 +622,6 @@
     }
   });
 
-  // ── Copiar token ───────────────────────────────────────
   function copiarToken() {
     const token = document.getElementById('token-value').textContent;
     navigator.clipboard.writeText(token).then(() => {

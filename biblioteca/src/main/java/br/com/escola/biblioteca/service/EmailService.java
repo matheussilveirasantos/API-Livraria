@@ -24,7 +24,7 @@ public class EmailService {
 
     @Async
     public void enviarEmailCadastroLivro(Livro livro) {
-        String assunto = "Novo Livro Cadastrado: " + livro.getTitulo();
+        String assunto = "📚 Novo Livro Cadastrado: " + livro.getTitulo();
         String corpo = buildEmailHtml(
             "Novo Livro Cadastrado",
             "Um novo livro foi adicionado ao catálogo da biblioteca.",
@@ -37,7 +37,7 @@ public class EmailService {
 
     @Async
     public void enviarEmailAlteracaoLivro(Livro livro) {
-        String assunto = "Livro Atualizado: " + livro.getTitulo();
+        String assunto = "✏️ Livro Atualizado: " + livro.getTitulo();
         String corpo = buildEmailHtml(
             "Livro Atualizado",
             "Os dados de um livro foram alterados no catálogo.",
@@ -50,7 +50,7 @@ public class EmailService {
 
     @Async
     public void enviarEmailExclusaoLivro(Livro livro) {
-        String assunto = "Livro Excluído: " + livro.getTitulo();
+        String assunto = "🗑️ Livro Excluído: " + livro.getTitulo();
         String corpo = buildEmailHtml(
             "Livro Excluído",
             "Um livro foi removido do catálogo da biblioteca.",

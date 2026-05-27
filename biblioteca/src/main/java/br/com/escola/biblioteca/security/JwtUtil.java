@@ -19,7 +19,7 @@ public class JwtUtil {
     private long expiration;
 
     private SecretKey getKey() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+    	return Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secret));
     }
 
     public String gerarToken(String username) {
