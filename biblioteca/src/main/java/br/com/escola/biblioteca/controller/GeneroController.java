@@ -13,48 +13,47 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 @RestController
-@RequestMapping("/editora")
-@Tag(name = "Gênero", description = "CRUD completo de gênero")
+@RequestMapping("/generos")
+@Tag(name = "Gêneros", description = "CRUD de gêneros literários")
 @SecurityRequirement(name = "BearerAuth")
-
 public class GeneroController {
 
-    @Autowired
-    private GeneroService generoService;
+    private final GeneroService generoService;
 
-    @Operation(summary="Listar todos os gêneros")
+    public GeneroController(GeneroService generoService) {
+        this.generoService = generoService;
+    }
+
+    @Operation(summary = "Listar gêneros")
     @GetMapping
     public ResponseEntity<List<GeneroResponseDTO>> listar() {
         return ResponseEntity.ok(generoService.listar());
     }
 
-    @Operation(summary="Busca o gênero que você escolheu")
+    @Operation(summary = "Buscar gênero por ID")
     @GetMapping("/{id}")
     public ResponseEntity<GeneroResponseDTO> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(generoService.buscarPorId(id));
     }
 
-    @Operation(summary="Atualizar gênero por id")
+    @Operation(summary = "Criar gênero", description = "Exemplo: {nome: Romance, sigla: ROM}")
     @PostMapping
-    public ResponseEntity<GeneroResponseDTO> criar(@Valid @RequestBody GeneroResquestDTO generoRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(generoService.criar(generoRequest));
+    public ResponseEntity<GeneroResponseDTO> criar(@Valid @RequestBody GeneroRequestDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(generoService.criar(dto));
     }
 
-    @Operation(summary="Atualizar o gênero")
+    @Operation(summary = "Atualizar gênero")
     @PutMapping("/{id}")
-    public ResponseEntity<GeneroResponseDTO>atualizar(@Valid @RequestBody GeneroRequestDTO generoRequest,@PathVariable long id){
-        return ResponseEntity.ok(generoService.atualizar(generoRequest, id));
+    public ResponseEntity<GeneroResponseDTO> atualizar(@PathVariable Long id,
+            @Valid @RequestBody GeneroRequestDTO dto) {
+        return ResponseEntity.ok(generoService.atualizar(id, dto));
     }
 
-
-    @Operation(summary="Deletar gênero por id")
+    @Operation(summary = "Deletar gênero", description = "Não é permitido deletar um gênero que possua livros vinculados")
     @DeleteMapping("/{id}")
-    
-     public ResponseEntity <GeneroResponseDTO>deletar(@PathVariable long id){
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
         generoService.deletar(id);
         return ResponseEntity.noContent().build();
-     }
+    }
 }
