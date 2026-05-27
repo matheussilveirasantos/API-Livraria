@@ -4,13 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "livro")
 public class Livro {
@@ -44,4 +38,56 @@ public class Livro {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_genero", nullable = false)
     private Genero genero;
+
+    public Livro() {}
+
+    public Livro(Long id, String titulo, String isbn, Integer anoPublicacao,
+                 Autor autor, Editora editora, Genero genero) {
+        this.id = id;
+        this.titulo = titulo;
+        this.isbn = isbn;
+        this.anoPublicacao = anoPublicacao;
+        this.autor = autor;
+        this.editora = editora;
+        this.genero = genero;
+    }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
+
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
+
+    public Integer getAnoPublicacao() { return anoPublicacao; }
+    public void setAnoPublicacao(Integer anoPublicacao) { this.anoPublicacao = anoPublicacao; }
+
+    public Autor getAutor() { return autor; }
+    public void setAutor(Autor autor) { this.autor = autor; }
+
+    public Editora getEditora() { return editora; }
+    public void setEditora(Editora editora) { this.editora = editora; }
+
+    public Genero getGenero() { return genero; }
+    public void setGenero(Genero genero) { this.genero = genero; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Livro)) return false;
+        Livro livro = (Livro) o;
+        return id != null && id.equals(livro.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Livro{id=" + id + ", titulo='" + titulo + "', isbn='" + isbn + "'}";
+    }
 }
