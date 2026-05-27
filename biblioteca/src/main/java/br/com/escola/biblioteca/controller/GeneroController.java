@@ -28,7 +28,7 @@ public class GeneroController {
     @Operation(summary="Listar todos os gêneros")
     @GetMapping
     public ResponseEntity<List<GeneroResponseDTO>> listar() {
-        return ResponseEntity.ok(generoService.listarTodos());
+        return ResponseEntity.ok(generoService.listar());
     }
 
     @Operation(summary="Busca o gênero que você escolheu")

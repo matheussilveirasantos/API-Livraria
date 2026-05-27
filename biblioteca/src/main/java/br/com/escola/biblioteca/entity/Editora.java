@@ -3,17 +3,11 @@ package br.com.escola.biblioteca.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
-import br.com.escola.biblioteca.Enum.EstadoEnum;
-
 @Entity
 @Table(name = "editora")
-
 public class Editora {
 
     @Id
@@ -29,51 +23,25 @@ public class Editora {
     @Column(length = 18, nullable = false)
     private String cnpj;
 
-    private EstadoEnum estado;
+    private String estado;
 
     @OneToMany(mappedBy = "editora", fetch = FetchType.LAZY)
     private List<Livro> livros;
 
-	public Long getId() {
-		return id;
-	}
+    public Editora() {}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-	public String getNome() {
-		return nome;
-	}
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public String getCnpj() { return cnpj; }
+    public void setCnpj(String cnpj) { this.cnpj = cnpj; }
 
-	public String getCnpj() {
-		return cnpj;
-	}
+    public String getEstado() { return estado; }
+    public void setEstado(String string) { this.estado = string; }
 
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
-	}
-
-	public EstadoEnum getEstado() {
-		return estado;
-	}
-
-	public void setEstado(EstadoEnum estado) {
-		this.estado = estado;
-	}
-
-	public List<Livro> getLivros() {
-		return livros;
-	}
-
-	public void setLivros(List<Livro> livros) {
-		this.livros = livros;
-	}
-
-    
-
+    public List<Livro> getLivros() { return livros; }
+    public void setLivros(List<Livro> livros) { this.livros = livros; }
 }
