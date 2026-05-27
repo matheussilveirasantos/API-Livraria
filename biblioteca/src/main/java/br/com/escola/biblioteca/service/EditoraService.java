@@ -72,6 +72,7 @@ public class EditoraService {
         return EditoraResponseDTO.fromEntity(editoraRepository.save(e));
     }
 
+<<<<<<< Updated upstream
     public void deletar(Long id) {
         Editora e = editoraRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Editora não encontrada com id: " + id));
@@ -80,8 +81,25 @@ public class EditoraService {
             throw new BusinessException(
                 "Não é possível excluir a editora '" + e.getNome() + "' pois existem livros vinculados a ela. " +
                 "Remova ou reatribua os livros antes de deletar a editora."
+=======
+    public boolean remover(Long id) {
+
+        Editora editora = editoraRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Editora não encontrada com id: " + id)
+                );
+
+        if (editora.getLivros() != null &&
+                !editora.getLivros().isEmpty()) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Não é possível excluir a editora porque ela possui livros associados."
+                    
+>>>>>>> Stashed changes
             );
         }
         editoraRepository.deleteById(id);
+		return true;
     }
 }

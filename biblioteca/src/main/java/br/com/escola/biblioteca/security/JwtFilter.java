@@ -24,10 +24,11 @@ public class JwtFilter extends BasicAuthenticationFilter {
         this.userDetailsService = uds;
     }
 
+    @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
-            FilterChain chain)
+            FilterChain filterChain)
 
             throws IOException, ServletException, java.io.IOException {
 
@@ -47,7 +48,7 @@ public class JwtFilter extends BasicAuthenticationFilter {
             }
 
         }
-        chain.doFilter(request, response);
+        filterChain.doFilter(request, response);
 
     }
 

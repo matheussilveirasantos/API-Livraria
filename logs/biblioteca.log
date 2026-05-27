@@ -1,0 +1,39 @@
+2026-05-26T14:51:23.295-03:00  INFO 540 --- [biblioteca] [restartedMain] b.c.e.biblioteca.BibliotecaApplication   : Starting BibliotecaApplication using Java 17.0.12 with PID 540 (C:\Users\Serratec\Documents\GitHub\API-Livraria\biblioteca\target\classes started by Serratec in C:\Users\Serratec\Documents\GitHub\API-Livraria)
+2026-05-26T14:51:23.735-03:00  INFO 540 --- [biblioteca] [restartedMain] b.c.e.biblioteca.BibliotecaApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-05-26T14:51:24.503-03:00  INFO 540 --- [biblioteca] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-05-26T14:51:24.929-03:00  INFO 540 --- [biblioteca] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-05-26T14:51:45.149-03:00  INFO 540 --- [biblioteca] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-26T14:51:45.663-03:00  INFO 540 --- [biblioteca] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 378 ms. Found 2 JPA repository interfaces.
+2026-05-26T14:52:05.527-03:00  INFO 540 --- [biblioteca] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-05-26T14:52:05.977-03:00  INFO 540 --- [biblioteca] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-05-26T14:52:06.008-03:00  INFO 540 --- [biblioteca] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2026-05-26T14:52:07.427-03:00  INFO 540 --- [biblioteca] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-05-26T14:52:07.618-03:00  INFO 540 --- [biblioteca] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 42436 ms
+2026-05-26T14:52:18.365-03:00  INFO 540 --- [biblioteca] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-26T14:52:19.191-03:00  INFO 540 --- [biblioteca] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.15.Final
+2026-05-26T14:52:19.785-03:00  INFO 540 --- [biblioteca] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-05-26T14:52:28.267-03:00  INFO 540 --- [biblioteca] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-26T14:52:28.985-03:00  INFO 540 --- [biblioteca] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-05-26T14:52:31.818-03:00  INFO 540 --- [biblioteca] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6242e6bd
+2026-05-26T14:52:32.306-03:00  INFO 540 --- [biblioteca] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-05-26T14:52:33.784-03:00  WARN 540 --- [biblioteca] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-26T14:52:34.254-03:00  INFO 540 --- [biblioteca] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 18.3
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-05-26T14:52:52.535-03:00  INFO 540 --- [biblioteca] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-26T14:52:55.054-03:00  INFO 540 --- [biblioteca] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-26T14:53:14.905-03:00  WARN 540 --- [biblioteca] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: ee23b4b4-309b-4eeb-b63c-86ca652d5070
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-05-26T14:53:15.059-03:00  INFO 540 --- [biblioteca] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-05-26T14:53:18.985-03:00  INFO 540 --- [biblioteca] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-05-26T14:53:19.552-03:00  INFO 540 --- [biblioteca] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-05-26T14:53:19.734-03:00  INFO 540 --- [biblioteca] [restartedMain] b.c.e.biblioteca.BibliotecaApplication   : Started BibliotecaApplication in 122.78 seconds (process running for 125.346)

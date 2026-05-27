@@ -28,7 +28,7 @@ public class GeneroController {
     @Operation(summary="Listar todos os gêneros")
     @GetMapping
     public ResponseEntity<List<GeneroResponseDTO>> listar() {
-        return ResponseEntity.ok(generoService.listar());
+        return ResponseEntity.ok(generoService.listarTodos());
     }
 
     @Operation(summary="Busca o gênero que você escolheu")
@@ -39,14 +39,14 @@ public class GeneroController {
 
     @Operation(summary="Atualizar gênero por id")
     @PostMapping
-    public ResponseEntity<GeneroResponseDTO> criar(@Valid @RequestBody GeneroResquestDTO generoRequest) {
+    public ResponseEntity<GeneroResponseDTO> criar(@Valid @RequestBody GeneroRequestDTO generoRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(generoService.criar(generoRequest));
     }
 
     @Operation(summary="Atualizar o gênero")
     @PutMapping("/{id}")
     public ResponseEntity<GeneroResponseDTO>atualizar(@Valid @RequestBody GeneroRequestDTO generoRequest,@PathVariable long id){
-        return ResponseEntity.ok(generoService.atualizar(generoRequest, id));
+        return ResponseEntity.ok(generoService.atualizar(id, generoRequest));
     }
 
 

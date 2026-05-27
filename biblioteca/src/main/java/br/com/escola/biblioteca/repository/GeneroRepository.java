@@ -1,12 +1,17 @@
 package br.com.escola.biblioteca.repository;
 
 import br.com.escola.biblioteca.entity.Genero;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GeneroRepository extends JpaRepository<Genero, Long> {
-    boolean existsByNome(String nome);
+    Optional<Genero> findBySiglaIgnoreCase(String sigla);
 
-    boolean existsBySigla(String sigla);
+	boolean existsByNomeIgnoreCase(String nome);
+
+	boolean existsBySiglaIgnoreCase(String sigla);
+
+
 }
