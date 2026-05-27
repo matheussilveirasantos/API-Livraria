@@ -1,6 +1,7 @@
-package br.Enum;
+package br.com.escola.biblioteca.Enum;
 
-public enum Estado {
+
+public enum EstadoEnum {
     AC,
     AL,  
     AP,  

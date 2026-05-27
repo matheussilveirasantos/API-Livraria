@@ -49,6 +49,7 @@ public class SwaggerConfig {
                 .license(license);
 
         // Esquema de segurança JWT para o Swagger
+        
         SecurityScheme securityScheme = new SecurityScheme()
                 .name(SECURITY_SCHEME_NAME)
                 .type(SecurityScheme.Type.HTTP)
