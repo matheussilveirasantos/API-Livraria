@@ -152,13 +152,6 @@ biblioteca
 
 > ⚠️ Todas as rotas abaixo (exceto `/auth/**`) exigem o header: `Authorization: Bearer <token>`
 
-## 🔐 Autenticação — `/auth`
-
-| Método | Rota             | Descrição                       | Autenticação |
-|--------|------------------|---------------------------------|--------------|
-| POST   | `/auth/register` | Registra um novo usuário        | ❌ Livre     |
-| POST   | `/auth/login`    | Faz login e retorna o token JWT | ❌ Livre     |
-
 ## 👨‍💼 Autores — `/autores`
 
 | Método | Rota            | Descrição                          |
