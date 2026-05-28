@@ -18,16 +18,19 @@ O projeto foi criado com foco em boas práticas de desenvolvimento backend, util
 
 # 🚀 Tecnologias Utilizadas
 
-* ☕ Java 17
-* 🌱 Spring Boot 3.5.0
-* 🗄️ Spring Data JPA
-* ✅ Bean Validation
-* 🐘 PostgreSQL
-* 🔐 Spring Security + JWT (jjwt 0.11.5)
-* 📧 Spring Mail
-* 📖 Swagger / OpenAPI (springdoc-openapi 2.8.8)
-* 🧪 JUnit
-* 📦 Maven
+| Tecnologia | Versão |
+|---|---|
+| ☕ Java | 17 |
+| 🌱 Spring Boot | 3.5.0 |
+| 🗄️ Spring Data JPA | — |
+| ✅ Bean Validation | — |
+| 🐘 PostgreSQL | — |
+| 🔐 Spring Security + JWT (jjwt) | 0.12.6 |
+| 📧 Spring Mail | — |
+| 📖 Swagger / OpenAPI (springdoc-openapi) | 2.8.8 |
+| 🪄 Lombok | — |
+| 🧪 JUnit | — |
+| 📦 Maven | — |
 
 ---
 
@@ -40,6 +43,8 @@ biblioteca
  ┃ ┃ ┣ java
  ┃ ┃ ┃ ┗ br/com/escola/biblioteca
  ┃ ┃ ┃    ┣ config
+ ┃ ┃ ┃    ┃  ┣ PasswordEncoderConfig.java
+ ┃ ┃ ┃    ┃  ┣ SecurityConfig.java
  ┃ ┃ ┃    ┃  ┗ SwaggerConfig.java
  ┃ ┃ ┃    ┣ controller
  ┃ ┃ ┃    ┃  ┣ AuthController.java
@@ -66,7 +71,8 @@ biblioteca
  ┃ ┃ ┃    ┃  ┗ Usuario.java
  ┃ ┃ ┃    ┣ exception
  ┃ ┃ ┃    ┃  ┣ BusinessException.java
- ┃ ┃ ┃    ┃  ┗ GlobalExceptionHandler.java
+ ┃ ┃ ┃    ┃  ┣ GlobalExceptionHandler.java
+ ┃ ┃ ┃    ┃  ┗ Validador.java
  ┃ ┃ ┃    ┣ repository
  ┃ ┃ ┃    ┃  ┣ AutorRepository.java
  ┃ ┃ ┃    ┃  ┣ EditoraRepository.java
@@ -144,7 +150,7 @@ biblioteca
 
 # 🌐 Endpoints
 
-> ⚠️ Todas as rotas abaixo exigem o header: `Authorization: Bearer <token>`
+> ⚠️ Todas as rotas abaixo (exceto `/auth/**`) exigem o header: `Authorization: Bearer <token>`
 
 ## 🔐 Autenticação — `/auth`
 
@@ -166,34 +172,34 @@ biblioteca
 
 ## 🏢 Editoras — `/editoras`
 
-| Método | Rota              | Descrição                        |
-|--------|-------------------|----------------------------------|
-| GET    | `/editoras`       | Lista todas as editoras          |
-| GET    | `/editoras/{id}`  | Busca editora por ID             |
-| POST   | `/editoras`       | Cadastra uma nova editora        |
-| PUT    | `/editoras/{id}`  | Atualiza os dados de uma editora |
-| DELETE | `/editoras/{id}`  | Remove uma editora               |
+| Método | Rota             | Descrição                        |
+|--------|------------------|----------------------------------|
+| GET    | `/editoras`      | Lista todas as editoras          |
+| GET    | `/editoras/{id}` | Busca editora por ID             |
+| POST   | `/editoras`      | Cadastra uma nova editora        |
+| PUT    | `/editoras/{id}` | Atualiza os dados de uma editora |
+| DELETE | `/editoras/{id}` | Remove uma editora               |
 
 ## 🎭 Gêneros — `/generos`
 
-| Método | Rota             | Descrição                       |
-|--------|------------------|---------------------------------|
-| GET    | `/generos`       | Lista todos os gêneros          |
-| GET    | `/generos/{id}`  | Busca gênero por ID             |
-| POST   | `/generos`       | Cadastra um novo gênero         |
-| PUT    | `/generos/{id}`  | Atualiza os dados de um gênero  |
-| DELETE | `/generos/{id}`  | Remove um gênero                |
+| Método | Rota            | Descrição                      |
+|--------|-----------------|--------------------------------|
+| GET    | `/generos`      | Lista todos os gêneros         |
+| GET    | `/generos/{id}` | Busca gênero por ID            |
+| POST   | `/generos`      | Cadastra um novo gênero        |
+| PUT    | `/generos/{id}` | Atualiza os dados de um gênero |
+| DELETE | `/generos/{id}` | Remove um gênero               |
 
 ## 📚 Livros — `/livros`
 
-| Método | Rota            | Descrição                          |
-|--------|-----------------|------------------------------------|
-| GET    | `/livros`       | Lista todos os livros              |
-| GET    | `/livros/{id}`  | Busca livro por ID                 |
-| POST   | `/livros`       | Cadastra um novo livro             |
-| POST   | `/livros/lote`  | Cadastra vários livros de uma vez  |
-| PUT    | `/livros/{id}`  | Atualiza os dados de um livro      |
-| DELETE | `/livros/{id}`  | Remove um livro                    |
+| Método | Rota           | Descrição                         |
+|--------|----------------|-----------------------------------|
+| GET    | `/livros`      | Lista todos os livros             |
+| GET    | `/livros/{id}` | Busca livro por ID                |
+| POST   | `/livros`      | Cadastra um novo livro            |
+| POST   | `/livros/lote` | Cadastra vários livros de uma vez |
+| PUT    | `/livros/{id}` | Atualiza os dados de um livro     |
+| DELETE | `/livros/{id}` | Remove um livro                   |
 
 ---
 
@@ -248,6 +254,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
 ```http
 POST /generos
 Content-Type: application/json
+Authorization: Bearer <token>
 ```
 
 ```json
@@ -262,6 +269,7 @@ Content-Type: application/json
 ```http
 POST /editoras
 Content-Type: application/json
+Authorization: Bearer <token>
 ```
 
 ```json
@@ -277,6 +285,7 @@ Content-Type: application/json
 ```http
 POST /autores
 Content-Type: application/json
+Authorization: Bearer <token>
 ```
 
 ```json
@@ -292,6 +301,7 @@ Content-Type: application/json
 ```http
 POST /livros
 Content-Type: application/json
+Authorization: Bearer <token>
 ```
 
 ```json
@@ -311,15 +321,17 @@ Content-Type: application/json
 
 O projeto segue uma arquitetura em camadas (Layered Architecture):
 
+```
 [ Cliente / Swagger ]
-↓
-[ Controller ]      ← recebe as requisições HTTP, valida token JWT
-↓
-[ Service ]        ← regras de negócio, envio de e-mail, conversão DTO ↔ Entity
-↓
-[ Repository ]      ← acesso ao banco via Spring Data JPA
-↓
-[ PostgreSQL ]
+        ↓
+  [ Controller ]      ← recebe as requisições HTTP, valida token JWT
+        ↓
+   [ Service ]        ← regras de negócio, envio de e-mail, conversão DTO ↔ Entity
+        ↓
+ [ Repository ]       ← acesso ao banco via Spring Data JPA
+        ↓
+  [ PostgreSQL ]
+```
 
 ### Detalhamento de cada camada
 
@@ -331,8 +343,8 @@ O projeto segue uma arquitetura em camadas (Layered Architecture):
 | **Entity** | `Autor`, `Editora`, `Genero`, `Livro`, `Usuario` | Mapeamento JPA das tabelas; relacionamentos `@ManyToOne` entre Livro, Autor, Editora e Genero |
 | **DTO** | `*RequestDTO`, `*ResponseDTO` | Records Java para entrada e saída de dados; `ResponseDTO` contém método estático `fromEntity()` |
 | **Security** | `JwtUtil`, `JwtFilter`, `UserDetailsServiceImpl` | Geração e validação de tokens JWT; filtro que intercepta todas as requisições |
-| **Exception** | `GlobalExceptionHandler`, `BusinessException` | Captura exceções globalmente via `@RestControllerAdvice`; retorna respostas padronizadas |
-| **Config** | `SwaggerConfig` | Configura o OpenAPI com suporte a autenticação Bearer no Swagger |
+| **Exception** | `GlobalExceptionHandler`, `BusinessException`, `Validador` | Captura exceções globalmente via `@RestControllerAdvice`; retorna respostas padronizadas com `timestamp`, `status`, `erro` e `mensagem` |
+| **Config** | `SecurityConfig`, `PasswordEncoderConfig`, `SwaggerConfig` | Configura Spring Security, encoder de senhas e OpenAPI com suporte a autenticação Bearer no Swagger |
 
 ---
 
@@ -361,22 +373,27 @@ CREATE DATABASE biblioteca;
 Ajuste o arquivo `src/main/resources/application.properties`:
 
 ```properties
-# Banco
+# Banco de dados
 spring.datasource.url=jdbc:postgresql://localhost:5432/biblioteca
 spring.datasource.username=postgres
-spring.datasource.password=SUA-SENHA
+spring.datasource.password=SUA_SENHA
 
 # JWT
-jwt.secret=MinhaChaveSecretaSuperSeguraParaJWT2024Biblioteca
+jwt.secret=SUA_CHAVE_SECRETA_FORTE_AQUI
 jwt.expiration=86400000
 
 # E-mail (use uma Senha de App do Gmail)
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
 spring.mail.username=seuemail@gmail.com
-spring.mail.password=sua_senha_de_app
-mail.notificacao.destino=seuemail@gmail.com
+spring.mail.password=SUA_SENHA_DE_APP
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+# Destinatários das notificações
+biblioteca.email.destinatario=seuemail@gmail.com
 ```
 
-> Para gerar a Senha de App do Gmail: **Conta Google → Segurança → Verificação em 2 etapas → Senhas de app**
 
 ## 5️⃣ Executar a aplicação
 
@@ -384,8 +401,8 @@ mail.notificacao.destino=seuemail@gmail.com
 ./mvnw spring-boot:run
 ```
 
-Ou diretamente pela classe principal:
-BibliotecaApplication.java
+Ou diretamente pela classe principal `BibliotecaApplication.java` na sua IDE.
+
 ---
 
 # 🌐 Acesso da API
@@ -415,9 +432,10 @@ BibliotecaApplication.java
 * Bean Validation
 * Layered Architecture
 * JWT Authentication (Stateless)
-* Tratamento global de exceções
+* Tratamento global de exceções (`@RestControllerAdvice`)
 * Documentação automática com Swagger/OpenAPI
-* Notificações por e-mail
+* Notificações por e-mail (cadastro, atualização e exclusão de livros)
+* HikariCP para pool de conexões
 
 ---
 
