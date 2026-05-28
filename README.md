@@ -28,8 +28,6 @@ O projeto foi criado com foco em boas práticas de desenvolvimento backend, util
 | 🔐 Spring Security + JWT (jjwt) | 0.12.6 |
 | 📧 Spring Mail | — |
 | 📖 Swagger / OpenAPI (springdoc-openapi) | 2.8.8 |
-| 🪄 Lombok | — |
-| 🧪 JUnit | — |
 | 📦 Maven | — |
 
 ---
@@ -92,7 +90,9 @@ biblioteca
  ┃ ┃ ┃    ┗ BibliotecaApplication.java
  ┃ ┃ ┗ resources
  ┃ ┃    ┣ Biblioteca.sql
- ┃ ┃    ┗ application.properties
+ ┃ ┃    ┣ application.properties
+ ┃ ┃    ┗static
+ ┃ ┃       ┗login.html
  ┃ ┗ test
  ┃    ┗ java/br/com/escola/biblioteca
  ┃       ┗ BibliotecaApplicationTests.java
@@ -205,20 +205,6 @@ biblioteca
 
 # 📖 Exemplos de Requisição
 
-## Registrar usuário
-
-```http
-POST /auth/register
-Content-Type: application/json
-```
-
-```json
-{
-  "login": "admin",
-  "senha": "123456"
-}
-```
-
 ## Login
 
 ```http
@@ -228,8 +214,8 @@ Content-Type: application/json
 
 ```json
 {
+ "senha": "admin123"
   "login": "admin",
-  "senha": "123456"
 }
 ```
 
@@ -237,9 +223,9 @@ Resposta:
 
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiJ9...",
-  "login": "admin",
-  "role": "ROLE_USER"
+    "token": "eyJhbGciOiJIUzI1NiJ9...",
+    "tipo": "Bearer",
+    "username": "admin"
 }
 ```
 
@@ -339,13 +325,13 @@ O projeto segue uma arquitetura em camadas (Layered Architecture):
 |---|---|---|
 | **Controller** | `AuthController`, `AutorController`, `EditoraController`, `GeneroController`, `LivroController` | Expõe os endpoints REST, valida entrada com `@Valid`, exige token JWT |
 | **Service** | `AutorService`, `EditoraService`, `GeneroService`, `LivroService`, `EmailService` | Regras de negócio, busca de entidades relacionadas, envio de e-mail, conversão DTO ↔ Entity |
-| **Repository** | `AutorRepository`, `EditoraRepository`, `GeneroRepository`, `LivroRepository`, `UsuarioRepository` | Interfaces `JpaRepository` — CRUD gerado automaticamente pelo Spring Data |
-| **Entity** | `Autor`, `Editora`, `Genero`, `Livro`, `Usuario` | Mapeamento JPA das tabelas; relacionamentos `@ManyToOne` entre Livro, Autor, Editora e Genero |
+| **Repository** | `AutorRepository`, `EditoraRepository`, `GeneroRepository`, `LivroRepository` | Interfaces `JpaRepository` — CRUD gerado automaticamente pelo Spring Data |
+| **Entity** | `Autor`, `Editora`, `Genero`, `Livro` | Mapeamento JPA das tabelas; relacionamentos `@ManyToOne` entre Livro, Autor, Editora e Genero |
 | **DTO** | `*RequestDTO`, `*ResponseDTO` | Records Java para entrada e saída de dados; `ResponseDTO` contém método estático `fromEntity()` |
 | **Security** | `JwtUtil`, `JwtFilter`, `UserDetailsServiceImpl` | Geração e validação de tokens JWT; filtro que intercepta todas as requisições |
 | **Exception** | `GlobalExceptionHandler`, `BusinessException`, `Validador` | Captura exceções globalmente via `@RestControllerAdvice`; retorna respostas padronizadas com `timestamp`, `status`, `erro` e `mensagem` |
 | **Config** | `SecurityConfig`, `PasswordEncoderConfig`, `SwaggerConfig` | Configura Spring Security, encoder de senhas e OpenAPI com suporte a autenticação Bearer no Swagger |
-
+| ** Validation** | `CnpjValidador`, `CnpjValido` | Valida o cnpj|
 ---
 
 # ▶️ Como Executar o Projeto
@@ -407,11 +393,11 @@ Ou diretamente pela classe principal `BibliotecaApplication.java` na sua IDE.
 
 # 🌐 Acesso da API
 
-| Recurso    | URL                                   |
-|------------|---------------------------------------|
-| API        | http://localhost:8080                 |
-| Swagger UI | http://localhost:8080/swagger-ui.html |
-| API Docs   | http://localhost:8080/api-docs        |
+| Recurso    | URL                                              |
+|------------|--------------------------------------------------|
+| API        | [login ](http://localhost:8080/login.html)       |
+| Swagger UI | [swagger](http://localhost:8080/swagger-ui.html) |
+| API Docs   | [api docs](http://localhost:8080/api-docs)       |
 
 > No Swagger, clique em **Authorize** e cole o token no formato: `Bearer <token>`
 
@@ -445,6 +431,3 @@ Projeto desenvolvido com fins educacionais para prática de desenvolvimento de A
 
 ---
 
-# 📄 Licença
-
-Projeto desenvolvido para estudos e aprendizado.
