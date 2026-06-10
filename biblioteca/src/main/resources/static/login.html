@@ -24,7 +24,6 @@
       padding: 20px;
     }
 
-    /* Wrapper externo com borda animada */
     .box {
       position: relative;
       width: 420px;
@@ -34,7 +33,7 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 15px rgba(0,0,0,0.5);
     }
 
     .box::before,
@@ -60,7 +59,6 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Painel interno */
     .login {
       position: relative;
       inset: 4px;
@@ -72,7 +70,6 @@
       z-index: 2;
     }
 
-    /* Header */
     .login-header {
       text-align: center;
       margin-bottom: 28px;
@@ -97,7 +94,6 @@
       font-size: 0.75rem;
     }
 
-    /* Tabs */
     .tabs {
       display: flex;
       background: rgba(255,255,255,0.06);
@@ -128,7 +124,6 @@
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* Alertas */
     .alert {
       display: none;
       align-items: center;
@@ -143,7 +138,6 @@
     .alert-success { background: rgba(69,243,255,.1); color: #45f3ff; border: 1px solid rgba(69,243,255,.3); }
     .alert-info    { background: rgba(69,243,255,.08); color: rgba(255,255,255,.7); border: 1px solid rgba(69,243,255,.2); display: flex; }
 
-    /* Grupos de campo */
     .form-group {
       margin-bottom: 18px;
     }
@@ -213,7 +207,6 @@
     }
     .toggle-pw:hover { color: #45f3ff; }
 
-    /* Link esqueci senha */
     .forgot {
       text-align: right;
       margin-top: -10px;
@@ -227,7 +220,6 @@
     }
     .forgot a:hover { color: #45f3ff; }
 
-    /* Botão principal */
     .btn-primary {
       width: 100%;
       background: #45f3ff;
@@ -256,7 +248,6 @@
 
     .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
 
-    /* Spinner */
     .spinner {
       display: none;
       width: 16px; height: 16px;
@@ -267,7 +258,6 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Links inferiores */
     .group {
       display: flex;
       justify-content: space-between;
@@ -282,7 +272,7 @@
     .group a:last-child { color: #ff007f; font-weight: 600; }
     .group a:last-child:hover { color: #fff; text-shadow: 0 0 10px #ff007f; }
 
-    /* ===== Token box ===== */
+	
     .token-box {
       display: none;
       flex-direction: column;
@@ -452,7 +442,6 @@
       </button>
     </div>
 
-    <!-- PAINEL LOGIN -->
     <div id="panel-login" class="tab-panel active">
 
       <div id="alert-login" class="alert"></div>
@@ -484,7 +473,6 @@
         </button>
       </form>
 
-      <!-- Token result -->
       <div class="token-box" id="token-box">
         <label><i class="fa-solid fa-key"></i> Token JWT gerado</label>
         <div class="token-value" id="token-value"></div>
@@ -502,7 +490,6 @@
       </div>
     </div>
 
-    <!-- PAINEL API INFO -->
     <div id="panel-api" class="tab-panel">
       <div class="alert alert-info show">
         <i class="fa-solid fa-circle-info"></i>
@@ -542,13 +529,12 @@
       </div>
     </div>
 
-    <!-- Footer -->
     <div class="card-footer">
       Documentação em <a href="http://localhost:8080/swagger-ui.html" target="_blank">Swagger UI</a>
     </div>
 
-  </div><!-- /login -->
-</div><!-- /box -->
+  </div>
+</div>
 
 <script>
   const API = 'http://localhost:8080';
@@ -609,6 +595,8 @@
         document.getElementById('token-value').textContent = data.token;
         document.getElementById('token-box').classList.add('show');
         sessionStorage.setItem('jwt_token', data.token);
+        sessionStorage.setItem('username', data.username || username);
+        setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
       } else {
         const msg = data.mensagem || 'Usuário ou senha incorretos.';
         showAlert('alert-login', 'error', 'fa-solid fa-circle-xmark', msg);
